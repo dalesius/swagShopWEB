@@ -6,7 +6,12 @@ import HttpService from '../services/http-service';
 const http = new HttpService();
 
 function App() {
-  http.getProducts();
+  
+  http.getProducts().then(products => {
+    console.log(products);
+  }, error => {
+
+  });
 
   return (
     <div className="App">
