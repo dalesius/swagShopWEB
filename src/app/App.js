@@ -1,32 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import HttpService from '../services/http-service';
+import Product from '../product/product';
 
 const http = new HttpService();
 
 function App() {
-  
-  http.getProducts().then(products => {
-    console.log(products);
-  }, error => {
-
-  });
+  http.getProducts().then(
+    (products) => {
+      console.log(products);
+    },
+    (error) => {}
+  );
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Welcome to the Swag Shop.</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container App-main">
+        <div className="row">
+          <Product
+            className="col-sm-4"
+            price="25.55"
+            title="Cool toy gun"
+            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
+          />
+          <Product
+            className="col-sm-4"
+            price="25.55"
+            title="Cool toy gun"
+            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
+          />
+          <Product
+            className="col-sm-4"
+            price="25.55"
+            title="Cool toy gun"
+            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
+          />
+        </div>
+      </div>
     </div>
   );
 }
