@@ -1,44 +1,57 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import HttpService from '../services/http-service';
 import Product from '../product/product';
 
 const http = new HttpService();
 
-function App() {
-  http.getProducts().then(
-    (products) => {
-      console.log(products);
-    },
-    (error) => {}
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+    };
+    // BINDINGS
+    this.loadData = this.loadData.bind(this);
+    this.productsList = this.productsList.bind(this);
 
-  return (
-    <div className="App">
-      <div className="container App-main">
-        <div className="row">
-          <Product
-            className="col-sm-4"
-            price="25.55"
-            title="Cool toy gun"
-            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
-          />
-          <Product
-            className="col-sm-4"
-            price="25.55"
-            title="Cool toy gun"
-            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
-          />
-          <Product
-            className="col-sm-4"
-            price="25.55"
-            title="Cool toy gun"
-            imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
-          />
+    this.loadData();
+  }
+
+  loadData = () => {
+    var self = this;
+    http.getProducts().then(
+      (productsFromDB) => {
+        self.setState({
+          products: productsFromDB,
+        });
+      },
+      (error) => {}
+    );
+  };
+
+  productsList = () => {
+    const list = this.state.products.map((product) => (
+      <div className="col-sm-4" key={product._id}>
+        <Product
+          title={product.title}
+          price={product.price}
+          imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
+        />
+      </div>
+    ));
+    return list;
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <div className="container App-main">
+          <div className="row">{this.productsList()}</div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
