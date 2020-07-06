@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import './product.css';
+import DataService from '../services/data-service';
+
+let dataService = new DataService();
 
 class Product extends Component {
+  constructor(props){
+    super(props);
+
+    // BINDINGS
+    this.onButtonclicked = this.onButtonclicked.bind(this);
+  }
+
+  onButtonclicked = () => {
+    dataService.addItemToWishlist(this.props.product);
+  }
+
   render() {
     return (
       <div className="card product">
@@ -11,11 +25,11 @@ class Product extends Component {
           alt="Product"
         ></img>
         <div className="card-body">
-          <h5 className="card-title">{this.props.title}</h5>
-          <p className="card-text">Price: ${this.props.price}</p>
-          <a href="../app/App.js" className="btn btn-primary">
+          <h5 className="card-title">{this.props.product.title}</h5>
+          <p className="card-text">Price: ${this.props.product.price}</p>
+          <button className="btn btn-primary" onClick={() => this.onButtonclicked()} >
             Add to wishlist
-          </a>
+          </button>
         </div>
       </div>
     );

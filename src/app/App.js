@@ -39,8 +39,7 @@ class App extends Component {
     const list = this.state.products.map((product) => (
       <div className="col-sm-4" key={product._id}>
         <Product
-          title={product.title}
-          price={product.price}
+          product={product}
           imgUrl="https://images.freeimages.com/images/large-previews/a03/deep-fried-spring-chicken-in-golden-lemon-batter-with-salad-1632218.jpg"
         />
       </div>
