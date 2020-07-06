@@ -17,6 +17,15 @@ class DataService {
     notificationService.postNotification(NOTIF_WISHLIST_CHANGED, wishlist);
   }
 
+  itemInWishlist = (item) => {
+    for (let index = 0; index < wishlist.length; index++) {
+      if (item === wishlist[index]){
+        return true;
+      }
+    }
+    return false;
+  }
+
   removeItemFromWishlist(item) {
     for (var x = 0, len = wishlist.length; x < len; x++) {
       if (wishlist[x]._id === item._id) {

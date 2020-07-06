@@ -19,8 +19,11 @@ class App extends Component {
     // BINDINGS
     this.loadData = this.loadData.bind(this);
     this.productsList = this.productsList.bind(this);
+  }
 
+  componentDidMount() {
     this.loadData();
+    console.log('Data fetched!');
   }
 
   loadData = () => {
@@ -48,6 +51,7 @@ class App extends Component {
   };
 
   render() {
+    console.log('Data rendered!');
     return (
       <div className="App">
         <div className="container-fluid App-main">
