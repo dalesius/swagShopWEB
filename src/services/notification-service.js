@@ -1,3 +1,15 @@
+// LA IDEA DEL SERVICIO ES MANIPULAR LAS INTERACCIONES 
+// CREADAS POR EL DATA-SERVICE, PARA ESO DEBO CREAR UNA
+// LISTA CON LAS DIFERENTES INTERACCIONES Y DENTRO DE 
+// CADA UNA DE ELLAS AGREGAR A SUS OBSERVADORES, O, MEJOR
+// DICHO, A LOS QUE QUIEREN HACER ALGO CUANDO ESA INTERACCION
+// SUCEDE. CUANDO SUCEDEN, RECORRO LA LISTA DE OBSERVADORES
+// DENTRO DE ESA INTERACCION EN PARTICULAR Y EJECUTO LA
+// ACCION QUE QUIEREN HACER USANDO LA DATA PROVISTA.
+
+// CONSTANTES GLOBALES DE NOTIFICACIONES
+export const NOTIF_WISHLIST_CHANGED = 'notif_wishlist_changed';
+
 let instance = null;
 var observers = {};
 
@@ -9,6 +21,15 @@ class NotificationService {
       instance = this;
     }
     return instance;
+  }
+  
+  postNotification = (notifName, data) => {
+    // NOTIFICO A TODOS LOS OBSERVADORES DE ESTE EVENTO QUE HUBO UN CAMBIO.
+    let obs = observers[notifName];
+    for (let index = 0; index < obs.length; index++) {
+      const obj = obs[index];
+      obj.callback(data);
+    }
   }
 
   removeObserver = (observer, notifName) => {
