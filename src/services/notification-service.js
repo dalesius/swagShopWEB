@@ -1,19 +1,21 @@
-// LA IDEA DEL SERVICIO ES MANIPULAR LAS INTERACCIONES 
-// CREADAS POR EL DATA-SERVICE, PARA ESO DEBO CREAR UNA
-// LISTA CON LAS DIFERENTES INTERACCIONES Y DENTRO DE 
-// CADA UNA DE ELLAS AGREGAR A SUS OBSERVADORES, O, MEJOR
-// DICHO, A LOS QUE QUIEREN HACER ALGO CUANDO ESA INTERACCION
-// SUCEDE. CUANDO SUCEDEN, RECORRO LA LISTA DE OBSERVADORES
-// DENTRO DE ESA INTERACCION EN PARTICULAR Y EJECUTO LA
-// ACCION QUE QUIEREN HACER USANDO LA DATA PROVISTA.
+// PATRON OBSERVER IMPLEMENTADO
+// ----------------------------
+// LA IDEA DEL SERVICIO ES MANIPULAR LOS EVENTOS
+// CREADOS POR EL DATA-SERVICE, PARA ESO DEBO CREAR
+// UNA LISTA CON LOS DIFERENTES EVENTOS Y DENTRO DE 
+// CADA UNO DE ESTOS EVENTOS AGREGAR A SUS OBSERVADORES
+// PARA QUE HAGAN ALGO CUANDO ESE EVENTO SE DISPARA.
+// CUANDO SUCEDEN, RECORRO LA LISTA DE OBSERVADORES
+// DENTRO DE ESE EVENTO EN PARTICULAR Y EJECUTO LA
+// ACCION (CALLBACK) QUE QUIEREN HACER USANDO LA DATA
+// PROVISTA.
 
 // CONSTANTES GLOBALES DE NOTIFICACIONES
 export const NOTIF_WISHLIST_CHANGED = 'notif_wishlist_changed';
 
 let instance = null;
-var observers = {};
+let observers = {};
 
-// OBSERVER PATTERN + SINGLETON
 class NotificationService {
   // SINGLETON
   constructor(){
@@ -24,34 +26,33 @@ class NotificationService {
   }
   
   postNotification = (notifName, data) => {
-    // NOTIFICO A TODOS LOS OBSERVADORES DE ESTE EVENTO QUE HUBO UN CAMBIO.
+    // NOTIFICO A TODOS LOS OBSERVADORES DE ESTE EVENTO QUE HUBO UN CAMBIO PARA QUE EJECUTEN SU ACCION
     let obs = observers[notifName];
-    for (let index = 0; index < obs.length; index++) {
-      const obj = obs[index];
+    for (let i = 0, len = obs.length; i < len; i++) {
+      const obj = obs[i];
       obj.callback(data);
     }
   }
 
+  // CHEQUEA QUE EL OBSERVADOR EXISTA Y LO REMUEVE.
   removeObserver = (observer, notifName) => {
-    // CHEQUEA QUE EL TIPO DE OBSERVADOR EXISTA Y LO REMUEVE.
     let obs = observers[notifName];
     if (obs) {
-      for (var index = 0, len = obs.length; index < len; index++) {
-        if (observer === obs[index].observer) {
-          observers[notifName].splice(index, 1);
+      for (var i = 0, len = obs.length; i < len; i++) {
+        if (observer === obs[i].observer) {
+          observers[notifName].splice(i, 1);
         }
       }
     }
   }
 
+  // CHEQUEA QUE EL OBSERVADOR EXISTA, SI NO, LO CREA.
   addObserver = (notifName, observer, callback) => {
-    // CHEQUEA QUE EL TIPO DE OBSERVADOR ESTE CREADO, SI NO, LO CREA.
     let obs = observers[notifName];
     if (!obs) {
       observers[notifName]= [];
     }
 
-    // METO EL NUEVO OBSERVADOR A LA LISTA CORRESPONDIENTE.
     let obj = {observer: observer, callback: callback};
     observers[notifName].push(obj);
   }
